@@ -14,8 +14,9 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright
 
-CSV_FILE="output/havells_products.csv"
-OUTPUT_DIR="output/products"
+CATEGORY = "home-appliances"
+CSV_FILE="output/havells_"+CATEGORY+".csv"
+OUTPUT_DIR="output/products/"+CATEGORY
 BATCH_SIZE=10
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -197,8 +198,14 @@ def scrape_product(page, product_url):
     data["images"]=gallery or data["images"]
 
     sku=data["sku"] or re.sub(r"[^A-Za-z0-9]","_",product_url.split("/")[-1])
-    with open(os.path.join(OUTPUT_DIR,f"{sku}.json"),"w",encoding="utf-8") as f:
-        json.dump(data,f,indent=2,ensure_ascii=False)
+    file_path = os.path.join(OUTPUT_DIR, f"{sku}.json")
+
+    if not os.path.exists(file_path):
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        print(f"Saved: {file_path}")
+    else:
+        print(f"Skipped (already exists): {file_path}")
 
 def main():
     df=pd.read_csv(CSV_FILE)

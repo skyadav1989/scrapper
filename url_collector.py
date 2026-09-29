@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 
 # Constants
-BASE_URL = "https://havells.com/all-products"
+BASE_URL = "https://havells.com/home-appliances.html"
 BATCH_SIZE = 10        # Number of pages to fetch in parallel per batch
 MAX_PAGES = 200        # Safety cap to prevent infinite loops
 
@@ -125,7 +125,7 @@ def collect_all_product_urls():
     # Save the output
     output_dir = "output"
     os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, "havells_products.csv")
+    output_file = os.path.join(output_dir, "havells_home-appliances.csv")
 
     logging.info("Saving %d unique product URLs to %s", len(all_product_urls), output_file)
     try:
